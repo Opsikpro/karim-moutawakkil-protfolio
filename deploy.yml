@@ -1,0 +1,19 @@
+name: Deploy Portfolio
+on:
+  push:
+    branches:
+      - master  # حيت خدمنا بـ master فـ السيرفر
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to EC2 via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ubuntu  # أو اليوزر اللي كتدخل بيه (غالباً ubuntu)
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/html/portfolio
+            git pull origin master
